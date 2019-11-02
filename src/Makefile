@@ -16,8 +16,9 @@ CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -fopenmp # GNU OpenMP
 HAS_ARMA := 0
 
 INC := 
-#LFLAGS := -lm
-LFLAGS := -lm -lgomp
+LFLAGS := -lm # No OpenMP
+#LFLAGS := -lm -lgomp # GNU OpenMP
+#LFLAGS := -lm -liomp5 # Intel OpenMP
 
 PRG_SUFFIX_FLAG := 0
 PRG_SUFFIX =

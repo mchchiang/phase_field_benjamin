@@ -5,7 +5,7 @@ This document explains how to compile and run the phase field model program.
 
 0. Dependencies
 
-The program is written in a mixture of C and C++. The only external dependecy 
+The program is written in a mixture of C and C++. The only external dependency 
 is the linear algebra package Armadillo, which is used for calculating 
 geometric properties of the cells (e.g., perimeter and area). This package 
 should be downloaded (http://arma.sourceforge.net/download.html) and installed
@@ -63,7 +63,9 @@ ii) For Intel compiler:
 Add the flag -qopenmp in the CFLAGS and CXXFLAGS section, i.e.,
     CFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -qopenmp
     CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -qopenmp
-
+Add the flag -liomp5 (or equivalent Intel OpenMP flag) in the LFLAGS section, 
+i.e.,
+    LFLAGS := -lm -liomp5
 
 ###############################################################################
 
@@ -115,7 +117,7 @@ where x and y are the index of each lattice site and value is the cell density
 
 c) Creating the parameter file
 
-The parameter file includes all the parameters required for running the mode
+The parameter file includes all the parameters required for running the model
 to be read by the program. This file should be divided into two sections: the
 first section specifies the parameters needed for running the program, and the
 second section specifies the observables to be measured and dumped from the
@@ -202,11 +204,11 @@ d) Running the program with the parameter file
 
 With the position file, shape file, and parameter file prepared, one can start
 the simulation program by enter the command (assume running from the directory
-where the executable is stored (i.e., bin/exe/))
+where the executable is stored (i.e., bin/exe/)
 
     ./run_phase_field_model param_file
 
-where 'param_file' is the directory to the parameter file. 
+where param_file is the directory to the parameter file. 
 
 
 ###############################################################################
@@ -219,11 +221,11 @@ can be tedious. Some scripts are provided in the src directory to automate
 this process:
 
 phase_field_init.sh  A bash script that oversees the entire process of creating
-		     the position file, shape file, and the parameter file
+		     the position file, shape file, and parameter file
 
 cell_position.py     A python script to generate the position of each cell on
 		     a triangular lattice. It also generates the velocity 
-		     components for each cell
+		     components of each cell
 
 cell_shape.py	     A python script to create the initial local field 
 		     configuration of a cell
@@ -524,5 +526,5 @@ Savitzky–Golay filter. cpi is the perimeter of the cell estimated based on the
 corner count algorithm by Proffitt and Rosen (Computer Graphics and Image
 Processing 20(4):347 1982). pixai is the area of the cell estimated from the
 number of pixels within the cell (i.e. based on the threshold phi > phi0/2) in
-the rescaled and smoothe field, whereas pixi is the actual number of pixels in
-the original local field that is within the cell. 
+the rescaled and smoothed field, whereas pixi is the actual number of pixels in
+the original local field that is within the cell.
