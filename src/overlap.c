@@ -26,7 +26,7 @@ double computeOverlap(OverlapAnalyser* ana, PhaseFieldModel* model,
   int clx, cly;
   double olapAvg, product;
   int getm, getn;
-  int x0m, y0m, x0n, y0n, dx0mn, dy0mn, xn, yn;
+  int x0m, y0m, x0n, y0n, dx0mn, dy0mn, xn, yn, phim, phin;
   Cell* cellm;
   Cell* celln;
 
@@ -38,12 +38,22 @@ double computeOverlap(OverlapAnalyser* ana, PhaseFieldModel* model,
   }
 
   // Compute the sum of all products of two fields: 
-  // xi_i(x) = sum_{j}phi_i(x)phi_j(x)
+  // chi_i(x) = sum_{j}phi_i(x)phi_j(x)
   olapAvg = 0.0;
   cellm = model->cells[cellIndex];
   getm = cellm->getIndex;
   clx = cellm->lx;
   cly = cellm->ly;
+
+  // Compute the area of the cell
+  double area = 0.0;
+  for (int i = 0; i < lx; i++) {
+    for (int j = 0; j < ly; j++) {
+      if (cellm->field[getm][i][j] < 1.0) continue;
+      area += 1.0;
+    }
+  }
+
   x0m = iwrap(model, cellm->x);
   y0m = jwrap(model, cellm->y);
   for (int n = 0; n < model->numOfCells; n++) {
@@ -59,14 +69,19 @@ double computeOverlap(OverlapAnalyser* ana, PhaseFieldModel* model,
       xn = dx0mn+i;
       if (xn < 0 || xn >= clx) continue;
       for (int j = 0; j < cly; j++) {
+	phim = cellm->field[getm][i][j];
+	if (phim < 1.0) continue;
+	phim = 1.0;
 	yn = dy0mn+j;
 	if (yn < 0 || yn >= cly) continue;
-	product = cellm->field[getm][i][j]*celln->field[getn][xn][yn];
+	phin = cellm->field[getn][xn][yn];
+	phin = phin < 1.0 ? 0.0 : 1.0;
+	product = phim*phin;
 	ana->overlapField[i][j] += product;
 	olapAvg += product;
       }
     }
   }
-  olapAvg /= (lx*ly);
+  olapAvg /= area;
   return olapAvg;
 }
