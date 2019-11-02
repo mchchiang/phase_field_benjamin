@@ -113,8 +113,11 @@ void initCellsFromFile(PhaseFieldModel* model, char* cmFile,
 	cell->vx = vx;
 	cell->vy = vy;
 	cell->v = sqrt(vx*vx+vy*vy);
-	cell->theta = atan2(-vy,-vx)+PF_PI;
+	if (cell->v > 0.0) {
+	  cell->theta = atan2(-vy,-vx)+PF_PI;
+	}
       }
+	printf("%.10f %.10f %.10f %.10f\n", cell->vx, cell->vy, cell->v, cell->theta);
       model->cells[index] = cell;
       initField(cell, field);
       count++;
@@ -196,6 +199,8 @@ void updateCellField(PhaseFieldModel* model, Cell* cell) {
   int cy = cell->y;
   int set = cell->setIndex;
   int get = cell->getIndex;
+  double vx = cell->vx;
+  double vy = cell->vy;
 
   double** cellField = cell->field[get];
   double cahnHilliard, volumeConst, advection, repulsion, phi;
@@ -203,7 +208,7 @@ void updateCellField(PhaseFieldModel* model, Cell* cell) {
   int iuu, iu, id, idd, juu, ju, jd, jdd;  // Nearest neighbours
   double vol = cell->volume / model->piR2phi02;
   double volprefactor = 4.0 * model->mu / model->piR2phi02;
-
+  
   // Apply fixed (Dirichlet) boundary conditions (u = 0 at boundaries)
   // i and j are coordinates in the cell's own reference frame
   for (int i = 2; i < clx-2; i++) {
@@ -227,9 +232,10 @@ void updateCellField(PhaseFieldModel* model, Cell* cell) {
       volumeConst = volprefactor * phi * (1.0 - vol);
 
       // Advection term (use the 3rd order upwind scheme)
-      advection = model->motility *
-	(upwind(model, i, j, iuu, iu, id, idd, 0, cell->vx, cellField) +
-	 upwind(model, i, j, juu, ju, jd, jdd, 1, cell->vy, cellField));
+      
+      advection = model->motility * 
+	(upwind(model, i, j, iuu, iu, id, idd, 0, vx, cellField) +
+	 upwind(model, i, j, juu, ju, jd, jdd, 1, vy, cellField));
 
       // Repulsion term
       x = iwrap(model, cx+i);

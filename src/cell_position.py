@@ -40,4 +40,4 @@ with open (outfile, "w") as writer:
         theta = random.random()*2.0*pi
         vx = v*math.cos(theta)
         vy = v*math.sin(theta)
-        writer.write("{:d} {:.5f} {:.5f} {:.5f} {:.5}\n".format(i,x,y,vx,vy))
+        writer.write("{:d} {:.10f} {:.10f} {:.10f} {:.10f}\n".format(i,x,y,vx,vy))

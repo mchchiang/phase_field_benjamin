@@ -1,23 +1,23 @@
 
 CC := gcc # GNU compiler
 # CC := icc # Intel compiler 
-CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 # No OpenMP
-#CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 -fopenmp # GNU OpenMP
+#CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 # No OpenMP
+CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 -fopenmp # GNU OpenMP
 #CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 -qopenmp # Intel OpenMP
 
 
 CXX := g++ # GNU compiler
 # CXX := icpc # Intel compiler
-CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 # No OpenMP
-#CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -fopenmp # GNU OpenMP
+#CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 # No OpenMP
+CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -fopenmp # GNU OpenMP
 #CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -qopenmp # Intel OpenMP
 
 # 0 = no armadillo and 1 = with armadillo
 HAS_ARMA := 0
 
 INC := 
-LFLAGS := -lm
-#LFLAGS := -lm -lgomp
+#LFLAGS := -lm
+LFLAGS := -lm -lgomp
 
 PRG_SUFFIX_FLAG := 0
 PRG_SUFFIX =
