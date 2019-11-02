@@ -1,13 +1,13 @@
 
 CC := gcc # GNU compiler
-# CC := icc # Intel compiler 
+#CC := icc # Intel compiler 
 #CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 # No OpenMP
 CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 -fopenmp # GNU OpenMP
 #CFLAGS := -Wall -Wshadow -Winline -O3 -std=c11 -qopenmp # Intel OpenMP
 
 
 CXX := g++ # GNU compiler
-# CXX := icpc # Intel compiler
+#CXX := icpc # Intel compiler
 #CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 # No OpenMP
 CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -fopenmp # GNU OpenMP
 #CXXFLAGS := -Wall -Wshadow -Winline -O3 -std=c++11 -qopenmp # Intel OpenMP
