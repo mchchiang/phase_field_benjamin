@@ -117,7 +117,6 @@ void initCellsFromFile(PhaseFieldModel* model, char* cmFile,
 	  cell->theta = atan2(-vy,-vx)+PF_PI;
 	}
       }
-	printf("%.10f %.10f %.10f %.10f\n", cell->vx, cell->vy, cell->v, cell->theta);
       model->cells[index] = cell;
       initField(cell, field);
       count++;
